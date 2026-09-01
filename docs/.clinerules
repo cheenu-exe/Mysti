@@ -1,0 +1,171 @@
+# MYSTI — Cline Rules
+
+These rules define how to build MYSTI. Follow them strictly.
+
+---
+
+## Architecture Constraint (Non-Negotiable)
+
+MYSTI shall operate as a **remote-memory, local-cache system**.
+
+- Persistent user memory shall be stored **remotely only in client-side encrypted form**
+- Plaintext personal memory shall exist **locally only transiently** during authorized retrieval/use
+- The master decryption key shall remain **exclusively within the user's trusted device** (Arch Linux)
+- The master key shall **never** be transmitted to the AI server, storage provider, or third-party model provider
+- Local cache shall be **RAM-only** (100-256 MB max, TTL/LRU, disappears on shutdown)
+- No permanent plaintext memory on disk
+
+---
+
+## Project Structure
+
+```
+mysti/
+├── core/           # Agent logic, planning, routing, scheduling
+├── memory/         # Memory manager, cache, encryption, retrieval
+├── storage/        # Pluggable remote storage providers (S3, B2, R2)
+├── research/       # Source integrations, collection, relevance
+├── security/       # Permissions, keys, sandbox, audit, injection defense
+├── tools/          # Filesystem, terminal, browser, git, network
+├── models/         # Model registry, routing, benchmarks
+├── api/            # FastAPI server and routes
+├── ui/             # Next.js dashboard
+├── config/         # Settings and configuration
+├── tests/          # Test suite
+└── pyproject.toml  # Project metadata
+```
+
+---
+
+## Language & Framework
+
+- **Backend:** Python 3.11+
+- **Web Framework:** FastAPI
+- **Validation:** Pydantic
+- **Storage:** boto3 (S3-compatible remote storage)
+- **Encryption:** cryptography library (AES-256-GCM)
+- **Frontend:** Next.js 14+ with React, Tailwind CSS, shadcn/ui
+- **Task Scheduling:** APScheduler
+- **CLI:** click or typer with rich
+
+---
+
+## Code Style
+
+- Use type hints on all function signatures
+- Use async/await for all I/O operations (storage, API calls)
+- Follow PEP 8 with Black formatter
+- Use meaningful variable and function names
+- No comments unless explaining non-obvious logic
+- Use docstrings for public API functions
+
+---
+
+## Security Rules
+
+1. **Never store the master key in a file** — use OS keystore (python-keyring)
+2. **Never send the master key over the network** — not even to your own server
+3. **Never store plaintext personal data on disk** — RAM cache only
+4. **Encrypt before upload** — all data must be encrypted locally before sending to remote storage
+5. **Audit everything** — log every action, permission check, and decision
+6. **Sandbox terminal execution** — all commands run in Docker with resource limits
+7. **Classify external content as T0 (untrusted)** — never let web content inject instructions
+8. **The AI cannot self-grant permissions** — only the user can approve actions
+
+---
+
+## Encryption Rules
+
+- Use AES-256-GCM for all encryption
+- Generate random 12-byte nonces for each encryption operation
+- Implement key hierarchy: master key → category keys → record keys
+- Master key stored in OS keystore only
+- Category keys encrypted with master key, stored in remote storage
+- Rotate keys when needed (versioned keys support old decryption)
+
+---
+
+## Storage Rules
+
+- Use abstract storage interface (`MemoryStore` with put/get/delete/list/exists)
+- Support pluggable providers: S3, Backblaze B2, Cloudflare R2, MinIO, local
+- Remote storage path format: `mysti/{type}/{category}/{uuid}.enc`
+- Never upload unencrypted data
+- Never upload encryption keys
+- Cache encrypted blobs in RAM (not plaintext)
+
+---
+
+## File Naming
+
+- Python files: `snake_case.py`
+- Python classes: `PascalCase`
+- Python functions: `snake_case`
+- API endpoints: `kebab-case` or `snake_case`
+- Environment variables: `MYSTI_SCREAMING_SNAKE_CASE`
+- Config files: `settings.py`, `config.toml`, `.env`
+
+---
+
+## Testing Rules
+
+- Write unit tests for all encryption functions
+- Write unit tests for storage operations (mock remote)
+- Write integration tests for API endpoints
+- Test cache hit/miss/TTL/LRU behavior
+- Test that remote storage never receives plaintext
+- Test that master key never leaves the device
+- Use pytest with pytest-asyncio for async tests
+
+---
+
+## Git Rules
+
+- Never commit `.env` files
+- Never commit `*.db` files
+- Never commit encryption keys or secrets
+- Never commit `__pycache__/` or `.venv/`
+- Use conventional commit messages: `feat:`, `fix:`, `docs:`, `test:`, `refactor:`
+- One logical change per commit
+
+---
+
+## Documentation Rules
+
+- Each phase has a detailed markdown document (10+ pages)
+- Documents follow consistent structure: Overview, Goals, Architecture, Data Models, API Design, Implementation, Dependencies, Testing, Edge Cases, Deliverables
+- Keep the Build Checklist updated as phases are completed
+- Document all API endpoints with request/response examples
+
+---
+
+## What NOT to Do
+
+- Do NOT use SQLite or PostgreSQL as primary storage (use remote object storage)
+- Do NOT store the entire memory database locally
+- Do NOT let the AI decide when to access your system
+- Do NOT allow the AI to self-grant permissions
+- Do NOT encrypt everything with one key (use key hierarchy)
+- Do NOT let the AI autonomously modify itself without approval
+- Do NOT skip the audit log for any operation
+- Do NOT store credentials in the AI memory database
+
+---
+
+## Phase Order
+
+Build phases in order. Do not skip ahead.
+
+1. **Phase 0:** Foundation (remote storage, encryption, cache, CLI)
+2. **Phase 1:** Memory Intelligence (semantic search, categories, consolidation)
+3. **Phase 2:** Research Agent (sources, relevance, daily briefings)
+4. **Phase 3:** Security (permissions, trust levels, audit, sandbox)
+5. **Phase 4:** Tools (filesystem, terminal, browser, git, network)
+6. **Phase 5:** Integration (knowledge graph, context, learning, projects)
+7. **Phase 6:** Self-Improvement (model registry, benchmarks, deployment)
+8. **Phase 7:** UI (dashboard, chat, memory browser, security panel)
+9. **Phase 8:** Advanced (voice, routing, backup, plugins, mobile)
+
+---
+
+*MYSTI — Your AI. Your Data. Your Rules. Remote encrypted storage. Local ephemeral cache. Master key never leaves your device.*
