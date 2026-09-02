@@ -10,6 +10,7 @@ from mysti.exceptions import MystiError
 VALID_STORAGE_PROVIDERS = ("local", "s3")
 VALID_SECRET_BACKENDS = ("keyring", "file", "memory")
 VALID_LLM_PROVIDERS = ("openai", "anthropic", "ollama", "none")
+VALID_EMBEDDING_PROVIDERS = ("auto", "sentence-transformers", "api", "hashing", "none")
 
 
 class Settings(BaseSettings):
@@ -46,6 +47,25 @@ class Settings(BaseSettings):
     llm_api_key: str | None = None
     llm_base_url: str | None = None
 
+    embedding_provider: str = "auto"
+    embedding_model: str = "all-MiniLM-L6-v2"
+    embedding_api_base: str = "https://api.openai.com/v1"
+    embedding_api_key: str | None = None
+    embedding_dimensions: int = 384
+    embedding_cache_size: int = 2048
+    consolidation_threshold: float = 0.85
+    semantic_search_threshold: float = 0.30
+
+    research_enabled: bool = False
+    research_briefing_hour: int = 6
+    research_briefing_minute: int = 0
+    research_collect_minutes: int = 60
+    research_consolidation_day: str = "sun"
+    research_consolidation_hour: int = 3
+    research_min_relevance: float = 5.0
+    research_max_briefing_items: int = 20
+    interests_path: Path | None = None
+
     @model_validator(mode="after")
     def _validate(self) -> "Settings":
         if self.storage_provider not in VALID_STORAGE_PROVIDERS:
@@ -66,7 +86,25 @@ class Settings(BaseSettings):
             raise MystiError(f"MYSTI_SECRET_BACKEND must be one of {VALID_SECRET_BACKENDS}")
         if self.llm_provider not in VALID_LLM_PROVIDERS:
             raise MystiError(f"MYSTI_LLM_PROVIDER must be one of {VALID_LLM_PROVIDERS}")
+        if self.embedding_provider not in VALID_EMBEDDING_PROVIDERS:
+            raise MystiError(
+                f"MYSTI_EMBEDDING_PROVIDER must be one of {VALID_EMBEDDING_PROVIDERS}"
+            )
+        if self.research_consolidation_day not in (
+            "mon", "tue", "wed", "thu", "fri", "sat", "sun",
+        ):
+            raise MystiError("MYSTI_RESEARCH_CONSOLIDATION_DAY must be a weekday (mon..sun)")
         return self
+
+    @property
+    def consolidation_similarity_threshold(self) -> float:
+        """Similarity above which consolidation merges memories (0-1)."""
+        return max(0.0, min(1.0, self.consolidation_threshold))
+
+    @property
+    def briefing_min_relevance(self) -> float:
+        """Minimum relevance score for a research item to appear in a briefing."""
+        return max(0.0, self.research_min_relevance)
 
     @property
     def max_record_bytes(self) -> int:

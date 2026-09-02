@@ -1,0 +1,100 @@
+Obtaining file:///C:/Users/srini/OneDrive/Documents/MYSTI
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Getting requirements to build editable: started
+  Getting requirements to build editable: finished with status 'done'
+  Installing backend dependencies: started
+  Installing backend dependencies: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Collecting numpy
+  Using cached numpy-2.5.2-cp313-cp313-win_amd64.whl.metadata (6.6 kB)
+Collecting apscheduler
+  Using cached apscheduler-3.11.3-py3-none-any.whl.metadata (6.5 kB)
+Requirement already satisfied: boto3>=1.34 in .\.venv\Lib\site-packages (from mysti==0.1.0) (1.43.85)
+Requirement already satisfied: cryptography>=42 in .\.venv\Lib\site-packages (from mysti==0.1.0) (50.0.1)
+Requirement already satisfied: fastapi>=0.110 in .\.venv\Lib\site-packages (from mysti==0.1.0) (0.141.1)
+Requirement already satisfied: httpx>=0.27 in .\.venv\Lib\site-packages (from mysti==0.1.0) (0.28.1)
+Requirement already satisfied: keyring>=24 in .\.venv\Lib\site-packages (from mysti==0.1.0) (25.7.0)
+Requirement already satisfied: pydantic-settings>=2.2 in .\.venv\Lib\site-packages (from mysti==0.1.0) (2.15.0)
+Requirement already satisfied: pydantic>=2.6 in .\.venv\Lib\site-packages (from mysti==0.1.0) (2.13.5)
+Requirement already satisfied: rich>=13 in .\.venv\Lib\site-packages (from mysti==0.1.0) (15.0.0)
+Requirement already satisfied: typer>=0.12 in .\.venv\Lib\site-packages (from mysti==0.1.0) (0.27.2)
+Requirement already satisfied: uvicorn>=0.29 in .\.venv\Lib\site-packages (from mysti==0.1.0) (0.52.4)
+Requirement already satisfied: black>=24 in .\.venv\Lib\site-packages (from mysti==0.1.0) (26.5.1)
+Requirement already satisfied: moto>=5 in .\.venv\Lib\site-packages (from moto[s3]>=5; extra == "dev"->mysti==0.1.0) (5.2.3)
+Requirement already satisfied: mypy>=1.9 in .\.venv\Lib\site-packages (from mysti==0.1.0) (2.3.1)
+Requirement already satisfied: pytest-asyncio>=0.23 in .\.venv\Lib\site-packages (from mysti==0.1.0) (1.4.0)
+Requirement already satisfied: pytest>=8 in .\.venv\Lib\site-packages (from mysti==0.1.0) (9.1.1)
+Requirement already satisfied: ruff>=0.4 in .\.venv\Lib\site-packages (from mysti==0.1.0) (0.16.5)
+Collecting tzlocal>=3.0 (from apscheduler)
+  Using cached tzlocal-5.4.4-py3-none-any.whl.metadata (7.7 kB)
+Requirement already satisfied: click>=8.0.0 in .\.venv\Lib\site-packages (from black>=24->mysti==0.1.0) (8.5.0)
+Requirement already satisfied: mypy-extensions>=0.4.3 in .\.venv\Lib\site-packages (from black>=24->mysti==0.1.0) (1.1.0)
+Requirement already satisfied: packaging>=22.0 in .\.venv\Lib\site-packages (from black>=24->mysti==0.1.0) (26.3)
+Requirement already satisfied: pathspec>=1.0.0 in .\.venv\Lib\site-packages (from black>=24->mysti==0.1.0) (1.1.1)
+Requirement already satisfied: platformdirs>=2 in .\.venv\Lib\site-packages (from black>=24->mysti==0.1.0) (4.11.6)
+Requirement already satisfied: pytokens~=0.4.0 in .\.venv\Lib\site-packages (from black>=24->mysti==0.1.0) (0.4.1)
+Requirement already satisfied: botocore<1.44.0,>=1.43.85 in .\.venv\Lib\site-packages (from boto3>=1.34->mysti==0.1.0) (1.43.85)
+Requirement already satisfied: jmespath<2.0.0,>=0.7.1 in .\.venv\Lib\site-packages (from boto3>=1.34->mysti==0.1.0) (1.1.0)
+Requirement already satisfied: s3transfer<0.20.0,>=0.19.0 in .\.venv\Lib\site-packages (from boto3>=1.34->mysti==0.1.0) (0.19.2)
+Requirement already satisfied: python-dateutil<3.0.0,>=2.1 in .\.venv\Lib\site-packages (from botocore<1.44.0,>=1.43.85->boto3>=1.34->mysti==0.1.0) (2.9.0.post0)
+Requirement already satisfied: urllib3!=2.2.0,<3,>=1.25.4 in .\.venv\Lib\site-packages (from botocore<1.44.0,>=1.43.85->boto3>=1.34->mysti==0.1.0) (2.7.0)
+Requirement already satisfied: six>=1.5 in .\.venv\Lib\site-packages (from python-dateutil<3.0.0,>=2.1->botocore<1.44.0,>=1.43.85->boto3>=1.34->mysti==0.1.0) (1.17.0)
+Requirement already satisfied: cffi>=2.0.0 in .\.venv\Lib\site-packages (from cryptography>=42->mysti==0.1.0) (2.1.1)
+Requirement already satisfied: pycparser in .\.venv\Lib\site-packages (from cffi>=2.0.0->cryptography>=42->mysti==0.1.0) (3.0)
+Requirement already satisfied: starlette>=0.46.0 in .\.venv\Lib\site-packages (from fastapi>=0.110->mysti==0.1.0) (1.6.0)
+Requirement already satisfied: typing-extensions>=4.8.0 in .\.venv\Lib\site-packages (from fastapi>=0.110->mysti==0.1.0) (4.16.0)
+Requirement already satisfied: typing-inspection>=0.4.2 in .\.venv\Lib\site-packages (from fastapi>=0.110->mysti==0.1.0) (0.4.4)
+Requirement already satisfied: annotated-doc>=0.0.2 in .\.venv\Lib\site-packages (from fastapi>=0.110->mysti==0.1.0) (0.0.5)
+Requirement already satisfied: anyio in .\.venv\Lib\site-packages (from httpx>=0.27->mysti==0.1.0) (4.14.2)
+Requirement already satisfied: certifi in .\.venv\Lib\site-packages (from httpx>=0.27->mysti==0.1.0) (2026.7.22)
+Requirement already satisfied: httpcore==1.* in .\.venv\Lib\site-packages (from httpx>=0.27->mysti==0.1.0) (1.0.9)
+Requirement already satisfied: idna in .\.venv\Lib\site-packages (from httpx>=0.27->mysti==0.1.0) (3.19)
+Requirement already satisfied: h11>=0.16 in .\.venv\Lib\site-packages (from httpcore==1.*->httpx>=0.27->mysti==0.1.0) (0.16.0)
+Requirement already satisfied: pywin32-ctypes>=0.2.0 in .\.venv\Lib\site-packages (from keyring>=24->mysti==0.1.0) (0.2.3)
+Requirement already satisfied: jaraco.classes in .\.venv\Lib\site-packages (from keyring>=24->mysti==0.1.0) (3.4.0)
+Requirement already satisfied: jaraco.functools in .\.venv\Lib\site-packages (from keyring>=24->mysti==0.1.0) (4.6.0)
+Requirement already satisfied: jaraco.context in .\.venv\Lib\site-packages (from keyring>=24->mysti==0.1.0) (6.1.2)
+Requirement already satisfied: requests>=2.5 in .\.venv\Lib\site-packages (from moto>=5->moto[s3]>=5; extra == "dev"->mysti==0.1.0) (2.34.2)
+Requirement already satisfied: xmltodict in .\.venv\Lib\site-packages (from moto>=5->moto[s3]>=5; extra == "dev"->mysti==0.1.0) (1.0.4)
+Requirement already satisfied: werkzeug!=2.2.0,!=2.2.1,>=0.5 in .\.venv\Lib\site-packages (from moto>=5->moto[s3]>=5; extra == "dev"->mysti==0.1.0) (3.1.8)
+Requirement already satisfied: responses!=0.25.5,>=0.15.0 in .\.venv\Lib\site-packages (from moto>=5->moto[s3]>=5; extra == "dev"->mysti==0.1.0) (0.26.3)
+Requirement already satisfied: PyYAML>=5.1 in .\.venv\Lib\site-packages (from moto[s3]>=5; extra == "dev"->mysti==0.1.0) (6.0.3)
+Requirement already satisfied: py-partiql-parser==0.6.3 in .\.venv\Lib\site-packages (from moto[s3]>=5; extra == "dev"->mysti==0.1.0) (0.6.3)
+Requirement already satisfied: librt>=0.13.0 in .\.venv\Lib\site-packages (from mypy>=1.9->mysti==0.1.0) (0.15.0)
+Requirement already satisfied: ast-serialize<1.0.0,>=0.6.0 in .\.venv\Lib\site-packages (from mypy>=1.9->mysti==0.1.0) (0.8.0)
+Requirement already satisfied: annotated-types>=0.6.0 in .\.venv\Lib\site-packages (from pydantic>=2.6->mysti==0.1.0) (0.8.0)
+Requirement already satisfied: pydantic-core==2.46.5 in .\.venv\Lib\site-packages (from pydantic>=2.6->mysti==0.1.0) (2.46.5)
+Requirement already satisfied: python-dotenv>=0.21.0 in .\.venv\Lib\site-packages (from pydantic-settings>=2.2->mysti==0.1.0) (1.2.3)
+Requirement already satisfied: colorama>=0.4 in .\.venv\Lib\site-packages (from pytest>=8->mysti==0.1.0) (0.4.6)
+Requirement already satisfied: iniconfig>=1.0.1 in .\.venv\Lib\site-packages (from pytest>=8->mysti==0.1.0) (2.3.0)
+Requirement already satisfied: pluggy<2,>=1.5 in .\.venv\Lib\site-packages (from pytest>=8->mysti==0.1.0) (1.6.0)
+Requirement already satisfied: pygments>=2.7.2 in .\.venv\Lib\site-packages (from pytest>=8->mysti==0.1.0) (2.21.0)
+Requirement already satisfied: charset_normalizer<4,>=2 in .\.venv\Lib\site-packages (from requests>=2.5->moto>=5->moto[s3]>=5; extra == "dev"->mysti==0.1.0) (3.5.1)
+Requirement already satisfied: markdown-it-py>=2.2.0 in .\.venv\Lib\site-packages (from rich>=13->mysti==0.1.0) (4.2.0)
+Requirement already satisfied: mdurl~=0.1 in .\.venv\Lib\site-packages (from markdown-it-py>=2.2.0->rich>=13->mysti==0.1.0) (0.1.2)
+Requirement already satisfied: shellingham>=1.3.0 in .\.venv\Lib\site-packages (from typer>=0.12->mysti==0.1.0) (1.5.4)
+Collecting tzdata (from tzlocal>=3.0->apscheduler)
+  Using cached tzdata-2026.3-py2.py3-none-any.whl.metadata (1.4 kB)
+Requirement already satisfied: markupsafe>=2.1.1 in .\.venv\Lib\site-packages (from werkzeug!=2.2.0,!=2.2.1,>=0.5->moto>=5->moto[s3]>=5; extra == "dev"->mysti==0.1.0) (3.0.3)
+Requirement already satisfied: more-itertools in .\.venv\Lib\site-packages (from jaraco.classes->keyring>=24->mysti==0.1.0) (11.1.0)
+Using cached numpy-2.5.2-cp313-cp313-win_amd64.whl (12.5 MB)
+Using cached apscheduler-3.11.3-py3-none-any.whl (66 kB)
+Using cached tzlocal-5.4.4-py3-none-any.whl (18 kB)
+Using cached tzdata-2026.3-py2.py3-none-any.whl (348 kB)
+Building wheels for collected packages: mysti
+  Building editable for mysti (pyproject.toml): started
+  Building editable for mysti (pyproject.toml): finished with status 'done'
+  Created wheel for mysti: filename=mysti-0.1.0-py3-none-any.whl size=1509 sha256=3ea629485413e48b1a3a423d426f06f457777474a4745900f210eb19dd40ad23
+  Stored in directory: C:\Users\srini\AppData\Local\Temp\pip-ephem-wheel-cache-sgsyyc7_\wheels\89\c0\cf\f763de85284ca5ab900a253d6e34d7e4edfb043c326de997cb
+Successfully built mysti
+Installing collected packages: tzdata, numpy, tzlocal, apscheduler, mysti
+  Attempting uninstall: mysti
+    Found existing installation: mysti 0.1.0
+    Uninstalling mysti-0.1.0:
+      Successfully uninstalled mysti-0.1.0
+
+Successfully installed apscheduler-3.11.3 mysti-0.1.0 numpy-2.5.2 tzdata-2026.3 tzlocal-5.4.4

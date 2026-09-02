@@ -31,6 +31,7 @@ DEFAULT_MEMORY_CATEGORIES = (
     "ideas",
 )
 RESERVED_CATEGORIES = ("meta", "conversation")
+VALID_CATEGORY_CHARS = set("abcdefghijklmnopqrstuvwxyz0123456789-")
 MANIFEST_KEY = "mysti/metadata/categories.enc"
 MANIFEST_AAD = b"mysti:categories-manifest"
 _NONCE_SIZE = 12
@@ -160,6 +161,29 @@ class KeyManager:
     async def category_names(self) -> list[str]:
         manifest = await self._load_manifest()
         return sorted(manifest["categories"])
+
+    async def create_category(self, category: str) -> None:
+        """Add a new category to the manifest with a fresh wrapped key.
+
+        Raises:
+            KeyManagementError: If the name is invalid or already exists.
+        """
+        if (
+            not category
+            or category != category.strip()
+            or not set(category) <= VALID_CATEGORY_CHARS
+        ):
+            raise KeyManagementError(
+                f"invalid category name: {category!r} (use lowercase letters, digits, '-')"
+            )
+        if category in RESERVED_CATEGORIES:
+            raise KeyManagementError(f"category {category!r} is reserved")
+        manifest = await self._load_manifest()
+        if category in manifest["categories"]:
+            raise KeyManagementError(f"category already exists: {category!r}")
+        manifest["categories"][category] = self._new_category_entry(category)
+        await self._save_manifest(manifest)
+        logger.info("Created category %r with a fresh wrapped key", category)
 
     async def get_category_key(
         self, category: str, version: int | None = None

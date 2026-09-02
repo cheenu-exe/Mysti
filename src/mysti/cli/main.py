@@ -13,7 +13,14 @@ from rich.console import Console
 from rich.table import Table
 
 from mysti import __version__
+from mysti.cli.memory import categories as _categories_command
+from mysti.cli.memory import consolidate as _consolidate_command
+from mysti.cli.memory import memory_app
 from mysti.cli.repl import ChatRepl
+from mysti.cli.research import briefing as _briefing_command
+from mysti.cli.research import deep_research as _research_command
+from mysti.cli.research import list_briefings as _briefings_command
+from mysti.cli.research import research_app
 from mysti.core.context import AppContext, build_context
 from mysti.exceptions import MystiError
 from mysti.settings import Settings
@@ -21,7 +28,51 @@ from mysti.settings import Settings
 app = typer.Typer(
     name="mysti", help="MYSTI - private, encrypted personal AI memory.", no_args_is_help=True
 )
+app.add_typer(memory_app, name="memory")
+app.add_typer(research_app, name="research")
 console = Console()
+
+
+@app.command("briefing")
+def briefing_cmd(
+    date: str = typer.Option(None, "--date", help="Briefing date (YYYY-MM-DD); default: today."),
+    list_all: bool = typer.Option(False, "--list", help="List recent briefings."),
+    days: int = typer.Option(7, "--days", help="How many days to list with --list."),
+    as_json: bool = typer.Option(False, "--json"),
+) -> None:
+    """Show today's (or a past day's) research briefing."""
+    if list_all:
+        _briefings_command(days=days, as_json=as_json)
+    else:
+        _briefing_command(date=date, as_json=as_json)
+
+
+@app.command("research")
+def research_cmd(
+    topic: str,
+    depth: int = typer.Option(3, "--depth", "-d", min=1, max=5),
+    as_json: bool = typer.Option(False, "--json"),
+) -> None:
+    """Run deep research on a topic across all configured sources."""
+    _research_command(topic, depth=depth, as_json=as_json)
+
+
+@app.command("categories")
+def categories(as_json: bool = typer.Option(False, "--json")) -> None:
+    """List memory categories with record counts."""
+    _categories_command(as_json=as_json)
+
+
+@app.command("consolidate")
+def consolidate(
+    category: str = typer.Option(None, "--category", "-c"),
+    skip_importance: bool = typer.Option(False, "--skip-importance"),
+    as_json: bool = typer.Option(False, "--json"),
+) -> None:
+    """Merge similar memories, deduplicate and re-score importance."""
+    _consolidate_command(
+        category=category, skip_importance=skip_importance, as_json=as_json
+    )
 
 _SENSITIVE_FIELDS = ("key", "token", "secret", "passphrase")
 
