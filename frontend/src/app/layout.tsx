@@ -1,0 +1,4 @@
+import "./globals.css";
+import Link from "next/link";
+import type { ReactNode } from "react";
+export default function Layout({children}:{children:ReactNode}){return <div className="shell"><aside className="side"><div className="brand">MYSTI<span style={{color:"#82918c"}}>/</span></div><nav className="nav"><Link href="/">◈ Dashboard</Link><Link href="/chat">◌ Chat</Link><Link href="/memory">▣ Memory</Link><Link href="/research">◎ Research</Link><Link href="/tools">◇ Tools</Link><Link href="/settings">⚙ Settings</Link></nav><div className="muted" style={{marginTop:"auto",padding:"12px",fontSize:12}}>SECURITY · ENCRYPTED</div></aside><main className="main"><header className="header"><div><div className="eyebrow">Personal intelligence layer</div><h1 className="title">Good morning</h1></div><span className="tag">● LOCAL</span></header>{children}</main></div>}
