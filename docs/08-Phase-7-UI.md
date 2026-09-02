@@ -775,11 +775,10 @@ When Phase 7 is complete, you will have:
 ## What Comes Next
 
 After Phase 7, you will move to **Phase 8: Advanced Features**, which adds:
-- Voice interface (speech-to-text and text-to-speech)
+- Voice interface (speech-to-text + text-to-speech with your cloned voice via Coqui TTS)
 - Multi-model routing for cost optimization
 - Backup and recovery
-- Plugin system
-- Mobile access enhancements
+- Mobile PWA support
 
 Phase 7's UI will serve as the foundation for these advanced features, with the chat interface supporting voice input and the settings panel managing backup configurations.
 

@@ -6,11 +6,10 @@ Phase 8 adds the final layer of sophistication to MYSTI — features that transf
 
 The major additions are:
 
-- **Voice interface** — Speak to MYSTI and hear responses, hands-free interaction
+- **Voice interface** — Speak to MYSTI and hear responses using your cloned voice (KikiVoice + Coqui TTS)
 - **Multi-model routing** — Automatically use the right model for the right task, optimizing cost and quality
 - **Backup and recovery** — Protect your knowledge base with encrypted backups and disaster recovery
-- **Plugin system** — Extend MYSTI with custom tools and capabilities
-- **Mobile access** — Interact with MYSTI from your phone
+- **Mobile access** — Interact with MYSTI from your phone via PWA
 - **Notification system** — Get alerts for important events
 - **Export and sharing** — Export your knowledge in various formats
 
@@ -18,27 +17,85 @@ Phase 8 completes the MYSTI project, making it a fully-featured personal AI oper
 
 ---
 
+## Voice Clone Integration
+
+### How It Works
+
+MYSTI uses **Coqui TTS XTTS v2** locally to generate speech in your voice. Your KikiVoice clone (MP3) serves as the **one-time reference sample** — Coqui TTS learns your voice characteristics from it and generates new speech without needing KikiVoice again.
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  Voice Clone Pipeline                                    │
+│                                                          │
+│  ┌──────────────┐    ┌──────────────┐    ┌────────────┐ │
+│  │ Your Voice   │───>│ KikiVoice    │───>│ Clone MP3  │ │
+│  │ (recording)  │    │ (one-time)   │    │ (reference)│ │
+│  └──────────────┘    └──────────────┘    └─────┬──────┘ │
+│                                                 │        │
+│                                    (one-time load)       │
+│                                                 │        │
+│                                                 ▼        │
+│  ┌──────────────┐    ┌──────────────┐    ┌────────────┐ │
+│  │ Generated    │<───│ Coqui TTS    │<───│ XTTS v2    │ │
+│  │ WAV output   │    │ (local)      │    │ model      │ │
+│  └──────────────┘    └──────────────┘    └────────────┘ │
+│                                                          │
+│  Coqui TTS uses your clone MP3 as reference for EVERY    │
+│  generation. No internet needed after initial setup.     │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Voice Sample
+
+- **Source:** `C:\Users\srini\Downloads\kikivoice-cloned-file-2026-09-01-23-50-48-7408.mp3`
+- **Project location:** `src/mysti/voice/assets/clone_reference.mp3`
+- **Used as:** Reference audio for Coqui XTTS v2 (loaded once, reused for all TTS)
+
+### Voice Interface Features
+
+- **Text-to-Speech:** Generate speech in your voice using Coqui XTTS v2 (your clone MP3 as reference)
+- **Speech-to-Text:** Transcribe voice input using OpenAI Whisper (local)
+- **Voice Sessions:** Full-duplex voice conversation with MYSTI
+- **Multi-language:** XTTS v2 supports 17 languages with the same voice clone
+- **Streaming:** Real-time audio streaming with <200ms latency on GPU
+- **Fully Local:** No internet needed after initial model download
+
+### Dependencies
+
+- `coqui-tts` (v0.27.5+) — XTTS v2 model for voice cloning TTS
+- `openai-whisper` — Local speech-to-text
+- `sounddevice` — Audio playback
+- `soundfile` — WAV file reading/writing
+- `torch` — PyTorch backend for Coqui TTS
+
+### Hardware Requirements
+
+- **GPU recommended:** CUDA-enabled GPU for fast inference (<200ms latency)
+- **CPU fallback:** Works on CPU but slower (~2-5s per sentence)
+- **RAM:** 4GB minimum, 8GB recommended
+- **Storage:** ~2GB for XTTS v2 model (downloaded on first use)
+
+---
+
 ## Goals and Success Criteria
 
 ### Primary Goals
 
-1. **Voice interface** — Speech-to-text input and optional text-to-speech output.
+1. **Voice interface** — Speech-to-text input and text-to-speech output using your cloned voice (KikiVoice + Coqui TTS).
 2. **Multi-model routing** — Automatically select the best model for each task.
 3. **Backup and recovery** — Encrypted backups with automated scheduling and recovery procedures.
-4. **Plugin system** — Allow custom tools and capabilities to be added.
-5. **Mobile access** — Responsive web interface optimized for mobile devices.
-6. **Notification system** — Alerts for daily briefings, security events, and important discoveries.
-7. **Export and sharing** — Export memories, research, and knowledge in various formats.
+4. **Mobile access** — Progressive Web App (PWA) installable on phones.
+5. **Notification system** — Alerts for daily briefings, security events, and important discoveries.
+6. **Export and sharing** — Export memories, research, and knowledge in various formats.
 
 ### Success Criteria
 
 You know Phase 8 is complete when:
 
-- You can speak to MYSTI and receive spoken responses
+- You can speak to MYSTI and receive spoken responses in YOUR cloned voice
 - MYSTI automatically routes tasks to the optimal model
 - Your knowledge base is automatically backed up and recoverable
-- You can add custom tools through the plugin system
-- You can access MYSTI from your phone
+- You can install MYSTI as a PWA on your phone
 - You receive notifications for important events
 - You can export your data in standard formats
 
@@ -56,10 +113,11 @@ Existing Components:
 ├── Web Dashboard (Phase 7)
 
 Phase 8 Adds:
-├── Voice Interface
-│   ├── Speech-to-Text (Whisper)
-│   ├── Text-to-Speech (optional)
-│   └── Wake Word Detection (optional)
+├── Voice Interface (KikiVoice Clone + Coqui TTS)
+│   ├── Speech-to-Text (Whisper, local)
+│   ├── Text-to-Speech (Coqui XTTS v2, voice cloning)
+│   │   └── Reference: KikiVoice cloned MP3
+│   └── Voice Session Manager
 ├── Multi-Model Router
 │   ├── Task Classifier
 │   ├── Model Selector
@@ -69,18 +127,18 @@ Phase 8 Adds:
 │   ├── Incremental Backup
 │   ├── Recovery Manager
 │   └── Backup Scheduler
-├── Plugin System
-│   ├── Plugin Manager
-│   ├── Tool Registry
-│   └── Plugin API
 ├── Notification System
 │   ├── Desktop Notifications
 │   ├── Email Notifications
 │   └── Webhook Notifications
-└── Export System
-    ├── Memory Export
-    ├── Research Export
-    └── Knowledge Graph Export
+├── Export System
+│   ├── Memory Export
+│   ├── Research Export
+│   └── Knowledge Graph Export
+└── PWA (Progressive Web App)
+    ├── Manifest
+    ├── Service Worker
+    └── Offline Support
 ```
 
 ---
@@ -98,6 +156,7 @@ Tracks voice interaction sessions.
 - `ended_at` — When the voice session ended.
 - `transcriptions` — List of transcribed messages.
 - `tts_enabled` — Whether text-to-speech is enabled.
+- `voice_clone_path` — Path to the reference voice file (KikiVoice clone).
 - `language` — Detected or configured language.
 - `accuracy_score` — Transcription accuracy (if measurable).
 
@@ -130,22 +189,6 @@ Tracks backup operations.
 - `created_at` — When the backup was created.
 - `retention_days` — How long the backup is kept.
 
-### Plugin Record
-
-Registered plugins.
-
-**Fields:**
-
-- `id` — Unique identifier (UUID).
-- `name` — Plugin name.
-- `version` — Plugin version.
-- `description` — What the plugin does.
-- `author` — Who created the plugin.
-- `enabled` — Whether the plugin is active.
-- `config` — Plugin-specific configuration (encrypted).
-- `installed_at` — When the plugin was installed.
-- `last_updated` — When the plugin was last updated.
-
 ### Notification Record
 
 Tracks sent notifications.
@@ -172,7 +215,7 @@ Tracks sent notifications.
 - Path: /voice/start
 - Request body: tts_enabled (boolean), language (optional)
 - Response: session_id, websocket_url
-- Behavior: Initiates a voice session and returns a WebSocket URL for streaming audio.
+- Behavior: Initiates a voice session using your pre-loaded clone reference and returns a WebSocket URL for streaming audio.
 
 **Transcribe audio**
 
@@ -180,15 +223,15 @@ Tracks sent notifications.
 - Path: /voice/transcribe
 - Request body: audio_data (binary), session_id
 - Response: transcribed_text, confidence
-- Behavior: Sends audio data for transcription.
+- Behavior: Sends audio data for transcription using local Whisper.
 
 **Text-to-speech**
 
 - Method: POST
 - Path: /voice/speak
-- Request body: text (string), voice (optional), speed (optional)
-- Response: audio_data (binary)
-- Behavior: Converts text to speech and returns audio.
+- Request body: text (string), speed (optional), language (optional)
+- Response: audio_data (binary WAV)
+- Behavior: Converts text to speech using Coqui XTTS v2 with your pre-loaded voice clone reference.
 
 **Stop voice session**
 
@@ -255,42 +298,6 @@ Tracks sent notifications.
 - Method: PUT
 - Path: /backup/schedule
 - Request body: schedule (cron expression), retention_days
-- Response: confirmation
-
-### Plugin Endpoints
-
-**List plugins**
-
-- Method: GET
-- Path: /plugins
-- Response: list of installed plugins
-
-**Install plugin**
-
-- Method: POST
-- Path: /plugins/install
-- Request body: plugin_source (URL or path), config (optional)
-- Response: plugin details
-- Behavior: Downloads, validates, and installs the plugin.
-
-**Enable/disable plugin**
-
-- Method: PUT
-- Path: /plugins/{plugin_id}/toggle
-- Request body: enabled (boolean)
-- Response: confirmation
-
-**Configure plugin**
-
-- Method: PUT
-- Path: /plugins/{plugin_id}/config
-- Request body: config (JSON)
-- Response: confirmation
-
-**Uninstall plugin**
-
-- Method: DELETE
-- Path: /plugins/{plugin_id}
 - Response: confirmation
 
 ### Notification Endpoints
@@ -364,23 +371,44 @@ Tracks sent notifications.
 
 ## Implementation Details
 
-### Step 1: Voice Interface
+### Step 1: Voice Interface (Coqui TTS + Your Clone Reference)
 
-**Speech-to-text integration**
+**Voice clone setup**
 
-Use OpenAI's Whisper model for local speech-to-text:
+1. Copy your KikiVoice cloned MP3 to `src/mysti/voice/assets/clone_reference.mp3`
+2. Convert MP3 to WAV format for Coqui TTS compatibility
+3. Load reference audio once on TTS engine initialization
+4. Coqui TTS extracts voice characteristics and reuses them for all generation
+
+**Text-to-speech with voice cloning**
+
+Use Coqui TTS XTTS v2 for voice-cloned TTS:
+- Load the XTTS v2 model (~1.8GB, downloaded on first use)
+- Use your KikiVoice clone as speaker reference (loaded once)
+- Generate speech at 24kHz sampling rate
+- Support streaming for real-time playback
+- Support 17 languages with the same voice clone
+
+```python
+from TTS.api import TTS
+
+# Initialize with voice clone reference (loaded once)
+tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to("cuda")
+tts.tts_to_file(
+    text="Hello, this is MYSTI speaking in your voice.",
+    file_path="output.wav",
+    speaker_wav="src/mysti/voice/assets/clone_reference.wav",
+    language="en"
+)
+```
+
+**Speech-to-text**
+
+Use OpenAI Whisper for local STT:
 - Download and run Whisper locally for privacy
 - Support multiple languages
 - Handle real-time transcription via WebSocket
 - Provide confidence scores for transcriptions
-
-**Text-to-speech**
-
-For text-to-speech, use:
-- Edge TTS (Microsoft) for high-quality, free TTS
-- Or OpenAI's TTS API for cloud-based TTS
-- Allow voice selection (male/female, accent)
-- Control speech speed
 
 **Voice session management**
 
@@ -390,15 +418,7 @@ Voice sessions work through WebSocket:
 3. Server transcribes audio using Whisper
 4. Transcribed text is sent to MYSTI for processing
 5. MYSTI's response is sent back
-6. If TTS is enabled, response is spoken aloud
-
-**Wake word detection**
-
-Optional wake word detection:
-- "Hey MYSTI" or custom wake word
-- Local detection using a lightweight model
-- Only process audio after wake word is detected
-- Reduces unnecessary processing
+6. Response is spoken aloud using your cloned voice
 
 ### Step 2: Multi-Model Router
 
@@ -423,10 +443,9 @@ For each task type, select the best model based on:
 **Routing rules**
 
 Configure routing rules:
-- If task is coding and cost is priority: use CodeLlama
-- If task is coding and quality is priority: use GPT-4
-- If task is simple: use cheapest available model
-- If task is complex: use best available model
+- Coding: DeepSeek V4 Flash (free) -> GPT-4 -> Claude
+- Research: DeepSeek V4 Flash -> GPT-3.5 -> local
+- Conversation: DeepSeek V4 Flash -> local model
 
 **Cost optimization**
 
@@ -483,54 +502,7 @@ Automate backups with a scheduler:
 - Configurable retention period
 - Automatic cleanup of old backups
 
-### Step 4: Plugin System
-
-**Plugin architecture**
-
-Plugins are Python packages that extend MYSTI:
-
-A plugin provides:
-- New tools (additional capabilities for the AI)
-- New research sources (additional information channels)
-- New memory categories (additional organization)
-- New UI components (additional dashboard panels)
-
-**Plugin API**
-
-Plugins interact with MYSTI through a defined API:
-- Register new tools with the Tool Gateway
-- Subscribe to events (conversation started, memory stored, etc.)
-- Access memory and research systems
-- Access the knowledge graph
-- Register new API endpoints
-
-**Plugin validation**
-
-Before installation, validate plugins:
-- Check that the plugin follows the API contract
-- Scan for malicious code patterns
-- Verify the plugin's digital signature (optional)
-- Test the plugin in a sandbox
-
-**Plugin management**
-
-Manage plugins through the dashboard:
-- Install from URL or local path
-- Enable/disable without uninstalling
-- Configure plugin-specific settings
-- View plugin logs and errors
-- Update to new versions
-- Uninstall cleanly
-
-### Step 5: Mobile Access
-
-**Responsive design**
-
-Optimize the web dashboard for mobile:
-- Responsive layouts that adapt to screen size
-- Touch-friendly controls
-- Simplified navigation for small screens
-- Swipe gestures for common actions
+### Step 4: Mobile Access (PWA)
 
 **Progressive Web App (PWA)**
 
@@ -547,7 +519,7 @@ Make the dashboard installable as a PWA:
 - Camera integration (photograph documents for OCR)
 - Location awareness (optional, for context)
 
-### Step 6: Notification System
+### Step 5: Notification System
 
 **Notification types**
 
@@ -573,7 +545,7 @@ Configure per notification type:
 - Set quiet hours (no notifications during certain times)
 - Set priority levels
 
-### Step 7: Export System
+### Step 6: Export System
 
 **Export formats**
 
@@ -581,7 +553,6 @@ Configure per notification type:
 - **CSV** — Tabular format for spreadsheet import
 - **Markdown** — Human-readable format for documentation
 - **GraphML** — Graph format for knowledge graph visualization
-- **PDF** — Formatted document export (optional)
 
 **Export scope**
 
@@ -606,18 +577,18 @@ For sensitive data:
 
 ### New Dependencies for Phase 8
 
+- **coqui-tts** (v0.27.5+) — XTTS v2 model for voice cloning TTS (uses KikiVoice clone as reference)
 - **openai-whisper** — Local speech-to-text
-- **edge-tts** — Text-to-speech
+- **sounddevice** — Audio playback
+- **soundfile** — WAV file reading/writing
+- **torch** — PyTorch backend for Coqui TTS
 - **python-socketio** or **fastapi WebSocket** — Real-time voice streaming
-- **pysounddevice** or **pyaudio** — Audio capture (for server-side processing)
-- **pluginbase** or custom plugin loader — Plugin management
 
 ### Existing Dependencies Used
 
 - **cryptography** — Encrypting backups
 - **APScheduler** — Backup scheduling
 - **Next.js** — PWA support
-- **Docker** — Plugin sandboxing
 
 ---
 
@@ -626,9 +597,10 @@ For sensitive data:
 ### Unit Tests
 
 **Voice tests**
-- Test transcription accuracy
-- Test TTS output quality
+- Test transcription accuracy with Whisper
+- Test TTS output with Coqui XTTS v2 and voice clone reference
 - Test voice session lifecycle
+- Test voice clone reference loading (once)
 
 **Routing tests**
 - Test task classification accuracy
@@ -641,12 +613,6 @@ For sensitive data:
 - Test backup restoration
 - Test backup encryption
 
-**Plugin tests**
-- Test plugin installation
-- Test plugin enable/disable
-- Test plugin API access
-- Test plugin uninstallation
-
 **Notification tests**
 - Test notification delivery
 - Test notification preferences
@@ -655,23 +621,20 @@ For sensitive data:
 ### Integration Tests
 
 **End-to-end voice flow**
-- Start voice session → speak → transcribe → process → respond → speak back
+- Start voice session → speak → transcribe → process → respond → speak back in cloned voice
 
 **End-to-end backup flow**
 - Trigger backup → verify encrypted archive → restore → verify data integrity
 
-**End-to-end plugin flow**
-- Install plugin → enable → use plugin feature → disable → uninstall
-
 ### Manual Testing
 
 After Phase 8 is complete:
-- Test voice input and output
+- Test voice input and output with your cloned voice
 - Verify model routing works correctly
 - Create and restore a backup
-- Install and use a test plugin
 - Receive a notification on your phone
 - Export your data and verify the export
+- Install MYSTI as PWA on your phone
 
 ---
 
@@ -679,9 +642,11 @@ After Phase 8 is complete:
 
 ### Voice Quality Issues
 
-If transcription quality is poor:
-- Adjust microphone sensitivity
-- Use noise cancellation
+If voice cloning quality is poor:
+- Ensure reference audio is clean (no background noise)
+- Use 6-20 seconds of clear speech for reference
+- Adjust temperature parameter (lower = more stable)
+- Try different XTTS v2 model versions
 - Provide visual feedback for detected speech
 - Allow manual correction of transcriptions
 
@@ -700,14 +665,6 @@ If a backup fails:
 - Alert the user if retries fail
 - Maintain the last good backup
 
-### Plugin Conflicts
-
-If plugins conflict with each other:
-- Isolate plugins in separate processes
-- Detect and report conflicts
-- Disable conflicting plugins
-- Provide resolution guidance
-
 ### Mobile Performance
 
 If the dashboard is slow on mobile:
@@ -722,19 +679,17 @@ If the dashboard is slow on mobile:
 
 When Phase 8 is complete, you will have:
 
-1. **Voice interface** — Speak to MYSTI and hear responses.
+1. **Voice interface** — Speak to MYSTI and hear responses in YOUR cloned voice (KikiVoice + Coqui TTS).
 
 2. **Multi-model routing** — Automatic model selection for cost optimization.
 
 3. **Backup system** — Encrypted, automated backups with recovery.
 
-4. **Plugin system** — Extensible architecture for custom capabilities.
+4. **Mobile access** — PWA installable on phones with offline support.
 
-5. **Mobile access** — Responsive dashboard optimized for phones.
+5. **Notification system** — Alerts for important events across channels.
 
-6. **Notification system** — Alerts for important events across channels.
-
-7. **Export system** — Export your data in multiple formats.
+6. **Export system** — Export your data in multiple formats.
 
 ---
 
@@ -749,10 +704,11 @@ With Phase 8 complete, MYSTI is a fully-featured personal AI operating layer:
 - **Knowledge graph** that connects your information
 - **Self-improvement** that helps MYSTI get better over time
 - **Web interface** that makes everything accessible
+- **Voice interface** that speaks with YOUR cloned voice
 - **Advanced features** that make MYSTI convenient and resilient
 
 The project is now ready for daily use as your personal AI assistant.
 
 ---
 
-*Phase 8 completes MYSTI — your private, secure, intelligent personal AI.*
+*Phase 8 completes MYSTI — your private, secure, intelligent personal AI with YOUR voice.*

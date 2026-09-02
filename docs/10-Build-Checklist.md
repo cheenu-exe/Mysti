@@ -312,10 +312,10 @@ Quick reference for building MYSTI. Check off each item as you complete it.
 
 ## Phase 8: Advanced
 
-- [ ] Set up Whisper for speech-to-text
-- [ ] Set up TTS (Edge TTS or OpenAI)
+- [ ] Set up Whisper for speech-to-text (local)
+- [ ] Set up Coqui TTS XTTS v2 for voice cloning (uses KikiVoice clone as reference)
+- [ ] Copy voice clone MP3 to `src/mysti/voice/assets/`
 - [ ] Implement voice session management
-- [ ] Add wake word detection (optional)
 - [ ] Build Multi-Model Router
 - [ ] Implement task classification
 - [ ] Add model selection logic
@@ -325,12 +325,6 @@ Quick reference for building MYSTI. Check off each item as you complete it.
 - [ ] Add incremental backups
 - [ ] Add backup scheduling
 - [ ] Add recovery procedures
-- [ ] Build Plugin System
-- [ ] Define plugin API
-- [ ] Implement plugin loader
-- [ ] Add plugin validation
-- [ ] Add plugin management UI
-- [ ] Optimize dashboard for mobile
 - [ ] Add PWA support
 - [ ] Build Notification System
 - [ ] Add desktop notifications
@@ -345,7 +339,7 @@ Quick reference for building MYSTI. Check off each item as you complete it.
 - [ ] Write integration tests
 - [ ] Manual testing of all features
 
-**Deliverable:** Voice, routing, backup, plugins, mobile, notifications
+**Deliverable:** Voice (cloned), routing, backup, mobile PWA, notifications
 
 ---
 

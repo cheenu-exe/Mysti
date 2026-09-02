@@ -107,7 +107,7 @@ This is how you interact with MYSTI. It can take multiple forms:
 
 - **CLI (Command Line Interface)** — The simplest form. A terminal-based chat where you type commands and the AI responds. This is the first interface that will be built.
 - **Web Dashboard** — A browser-based interface with a chat panel, memory browser, research feed, and security controls. Built with Next.js and React.
-- **Voice Interface** — Speech-to-text input and optional text-to-speech output. Added in later phases.
+- **Voice Interface** — Speech-to-text input and text-to-speech output using your cloned voice (Coqui TTS XTTS v2). Added in Phase 8.
 
 The UI layer handles:
 - Displaying conversations
@@ -447,7 +447,7 @@ mysti/
 | 5 | Memory + Research Integration | Weeks 19-22 | Knowledge graph, context injection, learning tracker |
 | 6 | Self-Improvement Loop | Weeks 23-26 | Model registry, benchmarks, update recommendations |
 | 7 | User Interface | Weeks 27-30 | Dashboard, web UI, security panel |
-| 8 | Advanced Features | Weeks 31-34 | Voice, multi-model routing, backup, plugins |
+| 8 | Advanced Features | Weeks 31-34 | Voice (cloned), multi-model routing, backup, PWA |
 
 ---
 
