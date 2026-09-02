@@ -175,4 +175,26 @@ Build phases in order. Do not skip ahead.
 
 ---
 
+## AI Engine Phases
+
+After completing Phases 0-8 (the infrastructure), build the AI Engine intelligence layer.
+
+10. **Phase A:** Agent Core (agent loop, task classification, memory-aware generation)
+11. **Phase B:** Memory-Augmented Generation (RAG pipeline, context enhancement, memory ranking)
+12. **Phase C:** Tool Integration (tool calling, function calling, tool registry)
+13. **Phase D:** Knowledge Integration (entity extraction, graph queries, entity-aware memory)
+14. **Phase E:** Intelligence Layer (model routing, proactive behavior, streaming, auto-memory)
+15. **Phase F:** Polish & Production (wire everything, optimize, full test suite, deployment)
+
+### AI Engine Rules
+
+- Build AI Engine phases in order (A through F)
+- Each phase builds on the previous phases
+- All existing tests must continue to pass
+- Follow the same documentation structure as Phases 0-8
+- The AI Engine is the orchestration layer above models, not training an LLM
+- The LLM is a component, not the entire AI engine
+
+---
+
 *MYSTI — Your AI. Your Data. Your Rules. Remote encrypted storage. Local ephemeral cache. Master key never leaves your device. Works on Windows and Linux.*

@@ -451,6 +451,81 @@ mysti/
 
 ---
 
+## AI Engine Phases
+
+After completing Phases 0-8 (the infrastructure), the AI Engine adds intelligence behaviors that make MYSTI proactive, not just reactive.
+
+| Phase | Name | Focus |
+|-------|------|-------|
+| A | Agent Core | Agent loop, task classification, memory-aware generation |
+| B | Memory-Augmented Generation | RAG pipeline, context enhancement, memory ranking |
+| C | Tool Integration | Tool calling, function calling, tool registry |
+| D | Knowledge Integration | Entity extraction, graph queries, entity-aware memory |
+| E | Intelligence Layer | Model routing, proactive behavior, streaming, auto-memory |
+| F | Polish & Production | Wire everything, optimize, full test suite, deployment |
+
+### AI Engine Overview
+
+The AI Engine is the intelligence orchestration layer above models. It makes MYSTI:
+
+- **Agent-based** — Multi-step reasoning with tool calling
+- **Memory-augmented** — Uses conversation history and memories for context
+- **Tool-using** — Can call external tools to accomplish tasks
+- **Knowledge-aware** — Understands entities and relationships
+- **Proactive** — Surfaces relevant information before being asked
+- **Intelligent** — Routes to the best model per task
+
+```
+┌─────────────────────────────────────────────────┐
+│  AI Engine                                        │
+│                                                  │
+│  Phase A: Agent Core                             │
+│  ├── Agent Loop (multi-step reasoning)          │
+│  ├── Task Classification (intent detection)     │
+│  └── Dynamic Prompt Building                    │
+│                                                  │
+│  Phase B: Memory-Augmented Generation           │
+│  ├── RAG Pipeline (retrieve + generate)         │
+│  ├── Memory Ranking (relevance scoring)         │
+│  └── Context Enhancement (memory injection)     │
+│                                                  │
+│  Phase C: Tool Integration                      │
+│  ├── Tool Calling (function calling)            │
+│  ├── Tool Registry (manage tools)               │
+│  └── Permission-Gated Execution                 │
+│                                                  │
+│  Phase D: Knowledge Integration                 │
+│  ├── Entity Extraction (people, projects)       │
+│  ├── Graph Queries (relationships)              │
+│  └── Entity-Aware Memory                        │
+│                                                  │
+│  Phase E: Intelligence Layer                    │
+│  ├── Model Routing (best model per task)        │
+│  ├── Proactive Behavior (surface suggestions)   │
+│  ├── Streaming Responses (SSE)                  │
+│  └── Auto-Memory Extraction                     │
+│                                                  │
+│  Phase F: Polish & Production                   │
+│  ├── Configuration Management                   │
+│  ├── Caching Layer                              │
+│  ├── Rate Limiting                              │
+│  ├── Metrics & Monitoring                       │
+│  └── Full Test Suite                            │
+└─────────────────────────────────────────────────┘
+```
+
+### AI Engine Documentation
+
+- [AI Engine Master Plan](AI-Engine-Master-Plan.md) — Overview of all 6 phases
+- [Phase A: Agent Core](11-AI-Engine-Phase-A-Agent-Core.md) — Agent loop, task classification
+- [Phase B: Memory-Augmented Generation](12-AI-Engine-Phase-B-Memory-Augmented-Generation.md) — RAG pipeline
+- [Phase C: Tool Integration](13-AI-Engine-Phase-C-Tool-Integration.md) — Tool calling
+- [Phase D: Knowledge Integration](14-AI-Engine-Phase-D-Knowledge-Integration.md) — Entity extraction
+- [Phase E: Intelligence Layer](15-AI-Engine-Phase-E-Intelligence-Layer.md) — Model routing, proactive behavior
+- [Phase F: Polish & Production](16-AI-Engine-Phase-F-Polish-Production.md) — Production readiness
+
+---
+
 ## Success Criteria
 
 The project is successful when:
