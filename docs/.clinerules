@@ -10,10 +10,16 @@ MYSTI shall operate as a **remote-memory, local-cache system**.
 
 - Persistent user memory shall be stored **remotely only in client-side encrypted form**
 - Plaintext personal memory shall exist **locally only transiently** during authorized retrieval/use
-- The master decryption key shall remain **exclusively within the user's trusted device** (Arch Linux)
+- The master decryption key shall remain **exclusively within the user's trusted device**
 - The master key shall **never** be transmitted to the AI server, storage provider, or third-party model provider
 - Local cache shall be **RAM-only** (100-256 MB max, TTL/LRU, disappears on shutdown)
 - No permanent plaintext memory on disk
+
+## Platform Support
+
+- **Windows** — Full support (Windows 10/11)
+- **Linux** — Full support (Ubuntu, Arch, Fedora, etc.)
+- **macOS** — Not supported (can be added later)
 
 ---
 
@@ -47,6 +53,7 @@ mysti/
 - **Frontend:** Next.js 14+ with React, Tailwind CSS, shadcn/ui
 - **Task Scheduling:** APScheduler
 - **CLI:** click or typer with rich
+- **Platforms:** Windows 10+, Linux (Ubuntu, Arch, Fedora, etc.)
 
 ---
 
@@ -164,8 +171,8 @@ Build phases in order. Do not skip ahead.
 6. **Phase 5:** Integration (knowledge graph, context, learning, projects)
 7. **Phase 6:** Self-Improvement (model registry, benchmarks, deployment)
 8. **Phase 7:** UI (dashboard, chat, memory browser, security panel)
-9. **Phase 8:** Advanced (voice cloned, routing, backup, mobile PWA)
+9. **Phase 8:** Advanced (voice cloned, routing, backup, mobile PWA, cross-platform)
 
 ---
 
-*MYSTI — Your AI. Your Data. Your Rules. Remote encrypted storage. Local ephemeral cache. Master key never leaves your device.*
+*MYSTI — Your AI. Your Data. Your Rules. Remote encrypted storage. Local ephemeral cache. Master key never leaves your device. Works on Windows and Linux.*

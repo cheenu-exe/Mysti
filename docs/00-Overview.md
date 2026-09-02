@@ -15,7 +15,7 @@ The name "MYSTI" is derived from the handle "mysti" — a personal identity mark
 MYSTI is built on four foundational principles:
 
 **1. Privacy by Design**
-Everything about you is encrypted at rest. The AI never has direct access to encryption keys. Your data is encrypted locally on your Arch machine before being sent to remote storage. The remote provider never sees plaintext. The master key never leaves your trusted device.
+Everything about you is encrypted at rest. The AI never has direct access to encryption keys. Your data is encrypted locally on your machine before being sent to remote storage. The remote provider never sees plaintext. The master key never leaves your trusted device.
 
 **2. Permission Before Action**
 The AI cannot autonomously decide to access your system. A security layer gates every action. You explicitly grant permissions, and every action is audited.
@@ -51,7 +51,7 @@ MYSTI is:
 
 ## High-Level Architecture
 
-MYSTI operates as a **remote-memory, local-cache system**. Persistent personal memory lives remotely in encrypted form. The local Arch machine holds only a small temporary cache. The decryption key never leaves your trusted device.
+MYSTI operates as a **remote-memory, local-cache system**. Persistent personal memory lives remotely in encrypted form. The local machine holds only a small temporary cache. The decryption key never leaves your trusted device.
 
 ### Architecture Constraint
 
@@ -461,7 +461,7 @@ The project is successful when:
 
 3. **You can switch to Active Mode** and MYSTI can perform tasks on your machine with explicit permission gates and full audit logging.
 
-4. **The security model actually works** — prompt injection attempts are caught, unauthorized actions are blocked, and every action is traceable. The master key never leaves your Arch machine.
+4. **The security model actually works** — prompt injection attempts are caught, unauthorized actions are blocked, and every action is traceable. The master key never leaves your trusted device.
 
 5. **You trust it enough to leave it running** as a background service that researches and maintains your knowledge base without requiring constant attention.
 
@@ -488,7 +488,7 @@ The project is successful when:
 To begin building MYSTI:
 
 1. **Read Phase 0 document** (01-Phase-0-Foundation.md) for detailed setup instructions
-2. **Set up the development environment** (Python, Docker, Git on Arch Linux)
+2. **Set up the development environment** (Python, Git on Windows or Linux)
 3. **Configure remote storage** (S3, Backblaze B2, or Cloudflare R2)
 4. **Build the project scaffold** (FastAPI + encryption + storage interface)
 5. **Implement encrypted memory storage** (encrypt locally, upload remotely)
@@ -515,4 +515,4 @@ Each phase document follows a consistent structure:
 
 ---
 
-*MYSTI — Your AI. Your Data. Your Rules.*
+*MYSTI — Your AI. Your Data. Your Rules. Works on Windows and Linux.*

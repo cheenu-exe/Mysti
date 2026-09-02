@@ -12,6 +12,7 @@ The major additions are:
 - **Mobile access** — Interact with MYSTI from your phone via PWA
 - **Notification system** — Get alerts for important events
 - **Export and sharing** — Export your knowledge in various formats
+- **Cross-platform** — Works on Windows and Linux
 
 Phase 8 completes the MYSTI project, making it a fully-featured personal AI operating layer.
 
@@ -98,6 +99,7 @@ You know Phase 8 is complete when:
 - You can install MYSTI as a PWA on your phone
 - You receive notifications for important events
 - You can export your data in standard formats
+- MYSTI works on both Windows and Linux
 
 ---
 
@@ -590,6 +592,12 @@ For sensitive data:
 - **APScheduler** — Backup scheduling
 - **Next.js** — PWA support
 
+### Platform Support
+
+- **Windows** — Full support (Windows 10/11)
+- **Linux** — Full support (Ubuntu, Arch, Fedora, etc.)
+- **macOS** — Not supported (can be added later)
+
 ---
 
 ## Testing
@@ -706,9 +714,10 @@ With Phase 8 complete, MYSTI is a fully-featured personal AI operating layer:
 - **Web interface** that makes everything accessible
 - **Voice interface** that speaks with YOUR cloned voice
 - **Advanced features** that make MYSTI convenient and resilient
+- **Cross-platform** — Works on Windows and Linux
 
 The project is now ready for daily use as your personal AI assistant.
 
 ---
 
-*Phase 8 completes MYSTI — your private, secure, intelligent personal AI with YOUR voice.*
+*Phase 8 completes MYSTI — your private, secure, intelligent personal AI with YOUR voice, running on YOUR platform.*
