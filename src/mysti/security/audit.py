@@ -9,7 +9,7 @@ network I/O, and every service operation must journal durably before returning.
 import hashlib
 import json
 import threading
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 _GENESIS_HASH = "0" * 64
@@ -102,3 +102,57 @@ class AuditLog:
         with open(self._path, encoding="utf-8") as handle:
             lines = handle.readlines()
         return [json.loads(line) for line in lines[-limit:] if line.strip()]
+
+    async def log_tool_execution(self, tool: str, command: str, result) -> None:
+        self.log(
+            f"tool.{tool}.execute",
+            command,
+            status="blocked" if result.blocked else "success",
+            reason=result.block_reason or None,
+            metadata={
+                "tool": tool,
+                "command": command,
+                "execution_time": result.execution_time,
+                "return_code": result.return_code,
+                "stdout": result.stdout,
+                "stderr": result.stderr,
+                "blocked": result.blocked,
+            },
+        )
+
+    async def log_security_event(self, event: str, details: dict) -> None:
+        self.log(f"security.{event}", "security", metadata=details)
+
+    async def log_llm_interaction(self, prompt: str, response: str, tokens: int) -> None:
+        self.log(
+            "llm.interaction",
+            "llm",
+            metadata={"prompt": prompt, "response": response, "tokens": tokens},
+        )
+
+    async def get_security_events(self, hours: int = 24) -> list[dict]:
+        return self._since(hours, lambda e: e["action"].startswith("security."))
+
+    async def get_tool_usage(self, hours: int = 24) -> dict:
+        entries = self._since(hours, lambda e: e["action"].startswith("tool."))
+        usage: dict[str, int] = {}
+        for entry in entries:
+            tool = entry.get("metadata", {}).get("tool", "unknown")
+            usage[tool] = usage.get(tool, 0) + 1
+        return usage
+
+    async def get_daily_summary(self) -> dict:
+        entries = self._since(24 * 365, lambda _e: True)
+        return {
+            "total": len(entries),
+            "successful": sum(e["status"] == "success" for e in entries),
+            "failed": sum(e["status"] != "success" for e in entries),
+        }
+
+    def _since(self, hours: int, predicate) -> list[dict]:
+        cutoff = datetime.now(UTC) - timedelta(hours=hours)
+        return [
+            e
+            for e in self.tail(100000)
+            if datetime.fromisoformat(e["timestamp"]) >= cutoff and predicate(e)
+        ]

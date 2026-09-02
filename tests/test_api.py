@@ -88,11 +88,17 @@ def test_status_endpoint(client):
 def test_bearer_token_required_when_configured(tmp_path, storage, secret_store):
     import asyncio
 
-    from tests.conftest import make_settings
-
     from mysti.core.context import build_context
+    from mysti.settings import Settings
 
-    settings = make_settings(tmp_path, api_token="s3cret")
+    settings = Settings(
+        storage_provider="local",
+        data_dir=tmp_path,
+        secret_backend="memory",
+        llm_provider="none",
+        api_token="s3cret",
+        _env_file=None,
+    )
     context = asyncio.run(
         build_context(settings=settings, storage=storage, secret_store=secret_store)
     )
