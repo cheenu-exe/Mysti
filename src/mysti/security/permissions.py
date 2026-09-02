@@ -103,9 +103,7 @@ class ModeManager:
 
     def set_mode(self, level: TrustLevel) -> bool:
         level = TrustLevel(level)
-        transition = (self._mode is TrustLevel.T2 and level is TrustLevel.T3) or (
-            self._mode is TrustLevel.T3 and level is TrustLevel.T4
-        )
+        transition = level in (TrustLevel.T3, TrustLevel.T4) and level is not self._mode
         if transition:
             prompt = (
                 "Allow network write access?"
